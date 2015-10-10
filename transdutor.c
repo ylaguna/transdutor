@@ -4,7 +4,7 @@
 #include <string.h>
 
 char palavra[200];
-char* v[200]; 
+char* v[200];
 int index_s = 0;
 
 void e0(int);
@@ -14,26 +14,42 @@ void aceita();
 void rejeita();
 int isNumber(char);
 int isLetter(char);
-void sendWord(int);
+
+char* iniciaStr();
+
+
+
+
+typedef struct schar{
+  char c;
+  schar* next;
+} schar;
+typedef struct str{
+  int size;
+  schar* first;
+} str;
+
 
 int main(){
   printf("Informe a palavra a ser Transduzida\n");
   gets(palavra);
   e0(0);
-  
-  
+
+
 }
 
 
 void aceita(){
   printf("aceita");
   system("pause");
+  //free(string);
   exit(0);
 }
 
 void rejeita(){
   printf("rejeita");
   system("pause");
+  //free(string);
   exit(0);
 }
 
@@ -50,6 +66,7 @@ int isLetter(char c){
 // controller
 void e0(int idx){
   if( isLetter(palavra[idx]) ){
+    iniciaStr();
     e1(idx+1);
   }
   if( isNumber(palavra[idx]) ){
@@ -76,7 +93,7 @@ void e1(int idx){
     e1(idx+1);
   }
   if(palavra[idx] == ' ' || palavra[idx] == '\0'){
-    sendWord(idx);
+
     e0(idx+1);
   }
   else{
@@ -94,6 +111,7 @@ void e2(int idx){
     e2(idx+1);
   }
   if(palavra[idx] == ' '){
+
     e0(idx+1);
   }
   else{
@@ -102,14 +120,13 @@ void e2(int idx){
 }
 
 
-void sendWord(int idx){
-  char str[idx+1];
-  int q = idx - index_s;
+str* iniciaStr(){
+  str string;
 
-  memcpy(str, palavra + index_s, q * sizeof(char));
+  string.size = 0;
 
-  printf("%s\n", str);
-  index_s = idx + 1;
 }
+
+
 
 
