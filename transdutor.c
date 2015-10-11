@@ -4,46 +4,34 @@
 #include <string.h>
 
 char palavra[200];
-char* v[200];
-int index_s = 0;
+char buffer[200];
+int  buffer_size = 0;
+
+char v[200][200];
+int index_v = 0;
 
 void e0(int);
 void e1(int);
 void e2(int);
-void aceita();
+
 void rejeita();
 int isNumber(char);
 int isLetter(char);
 
-char* iniciaStr();
+void iniciaStr(char);
+void addStr(char);
+char* retStr();
 
+void iniciaNbr(char);
+void addNbr(char);
+void retNbr();
 
-
-
-typedef struct schar{
-  char c;
-  schar* next;
-} schar;
-typedef struct str{
-  int size;
-  schar* first;
-} str;
-
+void printVars();
 
 int main(){
   printf("Informe a palavra a ser Transduzida\n");
   gets(palavra);
   e0(0);
-
-
-}
-
-
-void aceita(){
-  printf("aceita");
-  system("pause");
-  //free(string);
-  exit(0);
 }
 
 void rejeita(){
@@ -66,17 +54,18 @@ int isLetter(char c){
 // controller
 void e0(int idx){
   if( isLetter(palavra[idx]) ){
-    iniciaStr();
+    iniciaStr(palavra[idx]);
     e1(idx+1);
   }
-  if( isNumber(palavra[idx]) ){
+  else if( isNumber(palavra[idx]) ){
+    iniciaNbr(palavra[idx]);
     e2(idx+1);
   }
-  if(palavra[idx] == ' '){
+  else if(palavra[idx] == ' '){
     e0(idx+1);
   }
-  if(palavra[idx] == '\0'){
-    aceita();
+  else if(palavra[idx] == '\0'){
+    printVars();
   }
   else{
     rejeita();
@@ -86,17 +75,13 @@ void e0(int idx){
 
 // variavel
 void e1(int idx){
-  if( isLetter(palavra[idx]) ){
+  if( isLetter(palavra[idx]) || isNumber(palavra[idx]) ){
+    addStr(palavra[idx]);
     e1(idx+1);
-  }
-  if( isNumber(palavra[idx]) ){
-    e1(idx+1);
-  }
-  if(palavra[idx] == ' ' || palavra[idx] == '\0'){
-
-    e0(idx+1);
-  }
-  else{
+  } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
+    retStr();
+    e0(idx); // voltando com o mesmo idx 
+  } else {
     rejeita();
   }
 }
@@ -105,28 +90,71 @@ void e1(int idx){
 // numeral
 void e2(int idx){
   if( isLetter(palavra[idx]) ){
-    rejeita();
-  }
-  if( isNumber(palavra[idx]) ){
+    retNbr();
+    e0(idx);
+  } else if( isNumber(palavra[idx]) ){
+    addNbr(palavra[idx]);
     e2(idx+1);
-  }
-  if(palavra[idx] == ' '){
-
-    e0(idx+1);
-  }
-  else{
+  } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
+    retNbr();
+    e0(idx); // voltando com o mesmo idx 
+  } else {
     rejeita();
   }
 }
 
 
-str* iniciaStr(){
-  str string;
+void iniciaStr(char fchar){
+  buffer[0] = fchar;
+  buffer[1] = '\0';
+  buffer_size = 1;
+}
 
-  string.size = 0;
-
+void iniciaNbr(char fchar){
+  iniciaStr(fchar);
 }
 
 
+void addStr(char c){
+  buffer[buffer_size] = c;
+  buffer_size++;
+  buffer[buffer_size] = '\0';
+}
+
+void addNbr(char c){
+  addStr(c);
+}
+
+char* retStr(void){
+  int i;
+  for(i=0; i < index_v; i++){
+    if( strcmp ( v[i], buffer ) == 0){
+      printf("V(%d) -- ", i);
+      return "ok";
+    }
+  }
+
+  memcpy(v[index_v], buffer, buffer_size);
+  printf("V(%d) -- ", index_v);
+  index_v++;
+  buffer[0] = '\0';
+  buffer_size = 0;
+  return "new";
+}
+
+void retNbr(void){
+  printf("N(%s) -- ", buffer);
+  buffer[0] = '\0';
+  buffer_size = 0;
+}
+
+void printVars(void){
+  puts("\n------- Vars -------\n");
+  int i;
+  for(i=0; i < index_v; i++){
+    printf("V(%d) = %s\n", i, v[i]);
+  }
 
 
+  system("pause");
+}
