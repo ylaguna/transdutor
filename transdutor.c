@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <string.h>
 
+int idx = 0;
 char palavra[200];
 char buffer[200];
 int  buffer_size = 0;
@@ -10,9 +11,9 @@ int  buffer_size = 0;
 char v[200][200];
 int index_v = 0;
 
-void e0(int);
-void e1(int);
-void e2(int);
+void e0();
+void e1();
+void e2();
 
 void rejeita();
 int isNumber(char);
@@ -31,7 +32,7 @@ void printVars();
 int main(){
   printf("Informe a palavra a ser Transduzida\n");
   gets(palavra);
-  e0(0);
+  e0();
 }
 
 void rejeita(){
@@ -52,17 +53,20 @@ int isLetter(char c){
 
 
 // controller
-void e0(int idx){
+void e0(){
   if( isLetter(palavra[idx]) ){
     iniciaStr(palavra[idx]);
-    e1(idx+1);
+    idx++;
+    e1();
   }
   else if( isNumber(palavra[idx]) ){
     iniciaNbr(palavra[idx]);
-    e2(idx+1);
+    idx++;
+    e2();
   }
   else if(palavra[idx] == ' '){
-    e0(idx+1);
+    idx++;
+    e0();
   }
   else if(palavra[idx] == '\0'){
     printVars();
@@ -74,13 +78,14 @@ void e0(int idx){
 
 
 // variavel
-void e1(int idx){
+void e1(){
   if( isLetter(palavra[idx]) || isNumber(palavra[idx]) ){
     addStr(palavra[idx]);
-    e1(idx+1);
+    idx++;
+    e1();
   } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
     retStr();
-    e0(idx); // voltando com o mesmo idx 
+    e0(); // voltando com o mesmo idx 
   } else {
     rejeita();
   }
@@ -88,16 +93,17 @@ void e1(int idx){
 
 
 // numeral
-void e2(int idx){
+void e2(){
   if( isLetter(palavra[idx]) ){
     retNbr();
-    e0(idx);
+    e0();
   } else if( isNumber(palavra[idx]) ){
     addNbr(palavra[idx]);
-    e2(idx+1);
+    idx++;
+    e2();
   } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
     retNbr();
-    e0(idx); // voltando com o mesmo idx 
+    e0(); 
   } else {
     rejeita();
   }
