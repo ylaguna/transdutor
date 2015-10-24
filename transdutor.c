@@ -21,6 +21,8 @@ int isLetter(char);
 
 void iniciaStr(char);
 void addStr(char);
+void copiaChar(char *, char *);
+int compString(char*, char*);
 char* retStr();
 
 void iniciaNbr(char);
@@ -36,9 +38,8 @@ int main(){
 }
 
 void rejeita(){
-  printf("rejeita");
+  printf("\n Rejeita");
   system("pause");
-  //free(string);
   exit(0);
 }
 
@@ -85,7 +86,7 @@ void e1(){
     e1();
   } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
     retStr();
-    e0(); // voltando com o mesmo idx 
+    e0(); // voltando com o mesmo idx
   } else {
     rejeita();
   }
@@ -103,7 +104,7 @@ void e2(){
     e2();
   } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
     retNbr();
-    e0(); 
+    e0();
   } else {
     rejeita();
   }
@@ -120,6 +121,25 @@ void iniciaNbr(char fchar){
   iniciaStr(fchar);
 }
 
+void copiaChar(char * destino, char * origem){
+  //&destino = &origem;
+}
+// Função para comparação de strings, utilizada na linha 154
+int compString(char* ch1, char* ch2){
+  int i = 0;
+  while ( ch2[i] != '\0' ){
+        if (ch1[i] == '\0' || ch1[i]>ch2[i] || ch2[i]>ch1[i]){
+			return 1;
+		}
+        i++;
+  }
+
+    if (ch1[i] != '\0'){
+		return 1;
+	}
+
+    return 0;
+}
 
 void addStr(char c){
   buffer[buffer_size] = c;
@@ -134,7 +154,7 @@ void addNbr(char c){
 char* retStr(void){
   int i;
   for(i=0; i < index_v; i++){
-    if( strcmp ( v[i], buffer ) == 0){
+    if( compString( v[i], buffer ) == 0){
       printf("V(%d) -- ", i);
       return "ok";
     }
