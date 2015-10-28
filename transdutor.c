@@ -104,7 +104,7 @@ void e2(){
     e2();
   } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
     retNbr();
-    e0();
+    e0(); 
   } else {
     rejeita();
   }
