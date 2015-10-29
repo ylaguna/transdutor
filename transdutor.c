@@ -9,13 +9,18 @@ char buffer[200];
 int  buffer_size = 0;
 
 char v[200][200];
+char *p[200];
 int index_v = 0;
+int index_p = 0;
+
 
 void e0();
 void e1();
 void e2();
-
-void rejeita();
+void e3();
+void e4();
+void e5();
+void e6();
 int isNumber(char);
 int isLetter(char);
 
@@ -30,18 +35,24 @@ void addNbr(char);
 void retNbr();
 
 void printVars();
+void printPal();
 
 int main(){
+  p[0]= "LET";
+  p[1]= "IF";
+  p[2]= "ELSE";
+  p[3]= "THEN";
+  p[4]= "GOTO";
+  p[5]= "PRINT";
+  p[6]= "READ";
+  p[7]= "END";
+  p[8]= "OF";
+  
   printf("Informe a palavra a ser Transduzida\n");
   gets(palavra);
   e0();
 }
 
-void rejeita(){
-  printf("\n Rejeita");
-  system("pause");
-  exit(0);
-}
 
 int isNumber(char c){
   return ( (int)c >= 48 && (int)c <= 57 );
@@ -49,7 +60,7 @@ int isNumber(char c){
 }
 
 int isLetter(char c){
-  return ( (int)c >= 65 && (int)c <= 122 );
+  return ( ((int)c >= 65 && (int)c <= 90) || ((int)c >= 97 && (int)c <= 122));
 }
 
 
@@ -69,11 +80,18 @@ void e0(){
     idx++;
     e0();
   }
+  else if(palavra[idx] == '%'){
+    e6();
+  }
+  else if(palavra[idx] == ':'){
+    e3();
+  }
   else if(palavra[idx] == '\0'){
     printVars();
+    printPal();
   }
   else{
-    rejeita();
+    e5();
   }
 }
 
@@ -84,11 +102,9 @@ void e1(){
     addStr(palavra[idx]);
     idx++;
     e1();
-  } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
-    retStr();
-    e0(); // voltando com o mesmo idx
   } else {
-    rejeita();
+    retStr();
+    e0();
   }
 }
 
@@ -102,13 +118,38 @@ void e2(){
     addNbr(palavra[idx]);
     idx++;
     e2();
-  } else if(palavra[idx] == ' ' || palavra[idx] == '\0'){
-    retNbr();
-    e0(); 
   } else {
-    rejeita();
+    retNbr();
+    e0();
   }
 }
+void e3(){
+  printf("%c", palavra[idx]);
+  idx++;
+  if(palavra[idx]=='='){
+    e4();
+  }
+}
+void e4(){
+  printf("%c", palavra[idx]);
+  idx++;
+  e0();
+}
+void e5(){
+  printf("%c", palavra[idx]);
+  idx++;
+  e0();
+}
+
+void e6(){
+  idx ++;
+  if(palavra[idx] == '\0'){
+    e0();
+  }else {
+    e6();  
+  }
+}
+
 
 
 void iniciaStr(char fchar){
@@ -153,15 +194,22 @@ void addNbr(char c){
 
 char* retStr(void){
   int i;
-  for(i=0; i < index_v; i++){
-    if( compString( v[i], buffer ) == 0){
-      printf("V(%d) -- ", i);
+  for(i=0; i < 9; i++){
+    if( compString( p[i], buffer ) == 0){
+      printf("P(%d)", i);
       return "ok";
     }
   }
+  for(i=0; i < index_v; i++){
+    if( compString( v[i], buffer ) == 0){
+      printf("V(%d)", i);
+      return "ok";
+    }
+  }
+  
 
   memcpy(v[index_v], buffer, buffer_size);
-  printf("V(%d) -- ", index_v);
+  printf("V(%d)", index_v);
   index_v++;
   buffer[0] = '\0';
   buffer_size = 0;
@@ -169,10 +217,11 @@ char* retStr(void){
 }
 
 void retNbr(void){
-  printf("N(%s) -- ", buffer);
+  printf("N(%s)", buffer);
   buffer[0] = '\0';
   buffer_size = 0;
 }
+
 
 void printVars(void){
   puts("\n------- Vars -------\n");
@@ -181,6 +230,15 @@ void printVars(void){
     printf("V(%d) = %s\n", i, v[i]);
   }
 
+}
+void printPal(void){
+  puts("\n------- Palavras -------\n");
+  int i;
+  for(i=0; i < 9; i++){
+    printf("P(%d) = %s\n", i, p[i]);
+  }
+
 
   system("pause");
+  exit (0);
 }
