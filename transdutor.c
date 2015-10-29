@@ -1,3 +1,6 @@
+//Yan Laguna ** 22.113.025-5
+//Pedro Ruiz ** 22.113.035-4
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
